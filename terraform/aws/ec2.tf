@@ -12,8 +12,8 @@ sudo apt-get update
 sudo apt-get install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
-export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMAAA
-export AWS_SECRET_ACCESS_KEY=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
+export AWS_ACCESS_KEY_ID=****MAAA
+export AWS_SECRET_ACCESS_KEY=****AKEY
 export AWS_DEFAULT_REGION=us-west-2
 echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 EOF
@@ -285,6 +285,15 @@ resource "aws_s3_bucket" "flowbucket" {
     git_repo             = "terragoat"
     yor_trace            = "f058838a-b1e0-4383-b965-7e06e987ffb1"
   })
+}
+
+resource "aws_s3_bucket_public_access_block" "flowbucket" {
+  bucket = aws_s3_bucket.flowbucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 output "ec2_public_dns" {
